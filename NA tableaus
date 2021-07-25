@@ -1,0 +1,38 @@
+282	Short Term Inpatient Facility Dashboard
+285	Rendering Provider Profile Dashboard
+321	Market Overview
+322	ACO Market Overview
+323	BPCI Overview
+324	BPCI Rendering Performance
+325	BPCI Attributed Utilization
+326	Network Overview
+327	Attributed Practice Groups Profile
+328	Attributed Provider Profile
+331	Network Benchmark Selection
+332	Network Utilization
+333	Network Rendering Utilization
+338	Data Dictionary
+351	Savings Opportunity Overview
+352	Home Health Dashboard
+372	Identify Referral Opportunities
+374	Skilled Nursing Facility Dashboard
+384	Provider Scorecard
+385	PCP Referrals
+386	Specialist Drilldown
+387	Leakage Analysis
+400	CareJourney Explainer
+401	Provider Performance Index Explainer
+402	Explore Providers
+403	Practice Group Scorecard
+404	Explore Practice Groups
+405	PCP Practice Group Referrals
+406	Specialist Practice Group Drilldown
+407	Practice Group Leakage Analysis
+513	EGM Explainer
+515	Provider Taxonomy Explainer
+519	Direct Contracting Explainer
+520	ACO Head to Head
+521	ACO Head to Head Explainer
+1701	Provider Scorecard (custom)
+2001	Explore Practice Groups
+2002	Practice Group Scorecard

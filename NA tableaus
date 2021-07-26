@@ -36,3 +36,49 @@
 1701	Provider Scorecard (custom)
 2001	Explore Practice Groups
 2002	Practice Group Scorecard
+
+297	Provider Benchmark CBSA List
+298	Attributed Practice Group List
+299	Rendering Practice Group List
+300	Attributed Provider List
+302	Rendering Provider List
+334	Short Term Acute Care Facility List
+344	ACO Profile List
+346	Referrals List
+349	Attr Practice Utilization by Provider Type - no year filter
+350	ACO Utilization by Provider Type - no year filter
+366	Skilled Nursing Facility List
+367	Inpatient Rehab Facility List
+368	Long Term Acute Care Facility List
+369	Hospice Facility List
+376	Home Health Agency List
+383	List:  Referral Relationships for Planned Procedures
+394	Evaluating Strength of Provider Referral Relationships
+414	HCPCS by Providers
+415	ICD by Providers
+501	Practice Group Cost Scorecard
+502	Practice Group Outcomes Scorecard
+503	Provider Cost Scorecard
+504	Provider Outcomes Scorecard
+510	Episode List by ACO
+511	Episode List by NPI
+512	Episode List by Geography
+514	Provider Taxonomy - no year filter
+516	Participant List - 2017
+517	Alignment Churn - 2017
+518	Benchmark - 2017
+1820	Rendering Network Utilization Patterns
+1821	Rendering Practice Group Utilization
+1822	Rendering Facility Utilization
+
+exclude: 
+347	MA Counts By Plan - skip
+348	MA Utilization - skip
+381	List:  Outpatient Facility APC Categories - skip
+382	List:  Emergency Departments - skip
+413	MA Attribution by ACO and Plan - skip
+416	MA Attribution by Provider and Plan - skip
+505	Rendering Provider Profiles - Commercial - skip
+506	Attributed Provider Profiles - Commercial - skip
+507	Market Overview Profiles - Commercial - skip
+509	Provider Procedure Cost Variation Analysis - Commercial - skip

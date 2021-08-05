@@ -1,0 +1,7 @@
+select distinct pr.pk_report_id, pr.report_header_name from web2.portal_category pc 
+left join web2.portal_category_x_portal_report pcxpr 
+on pc.pk_category_id = pcxpr.pk_category_id 
+left join web2.portal_report pr
+on pcxpr.pk_report_id = pr.pk_report_id 
+where (pc.pk_portal_tree_id = '4' or pc.pk_portal_tree_id = '17' or pc.pk_portal_tree_id = '20' or pc.pk_portal_tree_id = '21') 
+order by pk_report_id;

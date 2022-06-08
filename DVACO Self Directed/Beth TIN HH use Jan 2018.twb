@@ -1,0 +1,2023 @@
+<?xml version='1.0' encoding='utf-8' ?>
+
+<!-- build 20181.18.0706.1237                               -->
+<workbook original-version='10.3' source-build='2018.1.3 (20181.18.0706.1237)' version='18.1' xml:base='http://localhost:9101' xmlns:user='http://www.tableausoftware.com/xml/user'>
+  <repository-location derived-from='http://localhost:9103/t/a2024/workbooks/BethTINHHuseJan2018?rev=1.8' id='BethTINHHuseJan2018' path='/t/a2024/workbooks' revision='1.9' site='a2024' />
+  <preferences />
+  <datasources>
+    <datasource hasconnection='false' inline='true' name='Parameters' version='18.1'>
+      <aliases enabled='yes' />
+      <column caption='ACO ID' datatype='string' name='[Parameter 1]' param-domain-type='list' role='measure' type='nominal' value='&quot;A2024&quot;'>
+        <calculation class='tableau' formula='&quot;A2024&quot;' />
+        <members>
+          <member value='&quot;A2024&quot;' />
+        </members>
+      </column>
+    </datasource>
+    <datasource caption='Home Heatlh Encounters' inline='true' name='federated.089jj2i0hk9k3z16y93o20og9od5' version='18.1'>
+      <connection class='federated'>
+        <named-connections>
+          <named-connection caption='db-pgsql-m03.crmcza0drodc.us-east-1.rds.amazonaws.com' name='postgres.1ic7co20sdbfp01gth1fs1sgrqln'>
+            <connection authentication='' class='redshift' dbname='mbr' odbc-connect-string-extras='UseDeclareFetch=0' odbc-native-protocol='' one-time-sql='' port='5439' server='db-redsql-prod-publish.czrytyo6pak4.us-east-1.redshift.amazonaws.com' server-oauth='' single-node='no' sslmode='require' username='souderb@dvaco.org' workgroup-auth-mode='prompt' />
+          </named-connection>
+        </named-connections>
+        <relation join='left' type='join'>
+          <clause type='join'>
+            <expression op='='>
+              <expression op='[Home Health Encounters].[fk_patient_id]' />
+              <expression op='[Patient Info].[pk_patient_id]' />
+            </expression>
+          </clause>
+          <relation connection='postgres.1ic7co20sdbfp01gth1fs1sgrqln' name='Home Health Encounters' type='text'>select a.*, o.prov_name as fac_name, o.*,&#10;    d.name as attributed_provider_name,&#10;    e.name as attributed_tin_name&#10;FROM wkbk2.metric_value_hh a&#10;left join ref.od_hha_oasis_summary_2017 o&#10;on split_part(a.fk_facility_id, &apos;|&apos;, 2) = o.ccn&#10;left join wkbk2.provider d&#10;on d.pk_provider_id = a.at_time_primary_prov_nh&#10;and d.org_id = a.org_id&#10;left join wkbk2.tin e&#10;on e.pk_tin_id = split_part(a.at_time_tin_fac_nh, &apos;|&apos;,2)&#10;and e.org_id = a.org_id&#10;WHERE a.org_id = &lt;[Parameters].[Parameter 1]&gt;</relation>
+          <relation connection='postgres.1ic7co20sdbfp01gth1fs1sgrqln' name='Patient Info' type='text'>select &#10;p.pk_patient_id,&#10;p.full_name as patient_name,&#10;case when p.gender_cd = &apos;1&apos; then &apos;Male&apos;&#10;      when p.gender_cd = &apos;2&apos; then &apos;Female&apos;&#10;      else &apos;N/A&apos; end as gender,&#10;p.date_of_birth,&#10;p.date_of_death,&#10;p.deceased_flag,&#10;p.addr_zip_cd as patient_zip&#10;from wkbk2.patient p &#10;where org_id = &lt;[Parameters].[Parameter 1]&gt;&#10;order by 1</relation>
+        </relation>
+        <metadata-records>
+          <metadata-record class='column'>
+            <remote-name>org_id</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[org_id]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>org_id</remote-alias>
+            <ordinal>1</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>256</width>
+            <contains-null>true</contains-null>
+            <cast-to-local-type>true</cast-to-local-type>
+            <collation flag='0' name='binary' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WLONGVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>attribution_curr_period_flag</remote-name>
+            <remote-type>11</remote-type>
+            <local-name>[attribution_curr_period_flag]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>attribution_curr_period_flag</remote-alias>
+            <ordinal>2</ordinal>
+            <local-type>boolean</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_BIT&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_BIT&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>assignable_curr_period_flag</remote-name>
+            <remote-type>11</remote-type>
+            <local-name>[assignable_curr_period_flag]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>assignable_curr_period_flag</remote-alias>
+            <ordinal>3</ordinal>
+            <local-type>boolean</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_BIT&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_BIT&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>at_time_primary_prov_nh</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[at_time_primary_prov_nh]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>at_time_primary_prov_nh</remote-alias>
+            <ordinal>4</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>256</width>
+            <contains-null>true</contains-null>
+            <cast-to-local-type>true</cast-to-local-type>
+            <collation flag='0' name='binary' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WLONGVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>at_time_tin_fac_nh</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[at_time_tin_fac_nh]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>at_time_tin_fac_nh</remote-alias>
+            <ordinal>5</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>256</width>
+            <contains-null>true</contains-null>
+            <cast-to-local-type>true</cast-to-local-type>
+            <collation flag='0' name='binary' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WLONGVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>assgn_medicare_status_cd</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[assgn_medicare_status_cd]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>assgn_medicare_status_cd</remote-alias>
+            <ordinal>6</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>256</width>
+            <contains-null>true</contains-null>
+            <cast-to-local-type>true</cast-to-local-type>
+            <collation flag='0' name='binary' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WLONGVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>patient_cohort</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[patient_cohort]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>patient_cohort</remote-alias>
+            <ordinal>7</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>256</width>
+            <contains-null>true</contains-null>
+            <cast-to-local-type>true</cast-to-local-type>
+            <collation flag='0' name='binary' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WLONGVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>risk_score</remote-name>
+            <remote-type>131</remote-type>
+            <local-name>[risk_score]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>risk_score</remote-alias>
+            <ordinal>8</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>10</precision>
+            <scale>2</scale>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_NUMERIC&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_NUMERIC&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>patient_frailty_group</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[patient_frailty_group]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>patient_frailty_group</remote-alias>
+            <ordinal>9</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>256</width>
+            <contains-null>true</contains-null>
+            <cast-to-local-type>true</cast-to-local-type>
+            <collation flag='0' name='binary' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WLONGVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>pk_ip_stay_id</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[pk_ip_stay_id]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>pk_ip_stay_id</remote-alias>
+            <ordinal>10</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>256</width>
+            <contains-null>true</contains-null>
+            <cast-to-local-type>true</cast-to-local-type>
+            <collation flag='0' name='binary' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WLONGVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>fk_patient_id</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[fk_patient_id]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>fk_patient_id</remote-alias>
+            <ordinal>11</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>256</width>
+            <contains-null>true</contains-null>
+            <cast-to-local-type>true</cast-to-local-type>
+            <collation flag='0' name='binary' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WLONGVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>fk_facility_id</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[fk_facility_id]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>fk_facility_id</remote-alias>
+            <ordinal>12</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>256</width>
+            <contains-null>true</contains-null>
+            <cast-to-local-type>true</cast-to-local-type>
+            <collation flag='0' name='binary' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WLONGVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>facility_ccn_num</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[facility_ccn_num]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>facility_ccn_num</remote-alias>
+            <ordinal>13</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>256</width>
+            <contains-null>true</contains-null>
+            <cast-to-local-type>true</cast-to-local-type>
+            <collation flag='0' name='binary' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WLONGVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>fk_provider_primary_id_list</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[fk_provider_primary_id_list]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>fk_provider_primary_id_list</remote-alias>
+            <ordinal>14</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>256</width>
+            <contains-null>true</contains-null>
+            <cast-to-local-type>true</cast-to-local-type>
+            <collation flag='0' name='binary' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WLONGVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>claim_paid_amt</remote-name>
+            <remote-type>131</remote-type>
+            <local-name>[claim_paid_amt]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>claim_paid_amt</remote-alias>
+            <ordinal>15</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>10</precision>
+            <scale>2</scale>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_NUMERIC&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_NUMERIC&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>month_cd</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[month_cd]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>month_cd</remote-alias>
+            <ordinal>16</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>256</width>
+            <contains-null>true</contains-null>
+            <cast-to-local-type>true</cast-to-local-type>
+            <collation flag='0' name='binary' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WLONGVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>stay_length_of_stay</remote-name>
+            <remote-type>20</remote-type>
+            <local-name>[stay_length_of_stay]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>stay_length_of_stay</remote-alias>
+            <ordinal>17</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>19</precision>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_BIGINT&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_SBIGINT&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>recert_flag</remote-name>
+            <remote-type>11</remote-type>
+            <local-name>[recert_flag]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>recert_flag</remote-alias>
+            <ordinal>18</ordinal>
+            <local-type>boolean</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_BIT&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_BIT&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>lupa_flag</remote-name>
+            <remote-type>11</remote-type>
+            <local-name>[lupa_flag]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>lupa_flag</remote-alias>
+            <ordinal>19</ordinal>
+            <local-type>boolean</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_BIT&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_BIT&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>concurrent_ip_admissions</remote-name>
+            <remote-type>20</remote-type>
+            <local-name>[concurrent_ip_admissions]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>concurrent_ip_admissions</remote-alias>
+            <ordinal>20</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>19</precision>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_BIGINT&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_SBIGINT&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>concurrent_er_admits</remote-name>
+            <remote-type>20</remote-type>
+            <local-name>[concurrent_er_admits]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>concurrent_er_admits</remote-alias>
+            <ordinal>21</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>19</precision>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_BIGINT&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_SBIGINT&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>concurrent_er_non_admits</remote-name>
+            <remote-type>20</remote-type>
+            <local-name>[concurrent_er_non_admits]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>concurrent_er_non_admits</remote-alias>
+            <ordinal>22</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>19</precision>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_BIGINT&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_SBIGINT&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>at_time_network_nh</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[at_time_network_nh]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>at_time_network_nh</remote-alias>
+            <ordinal>23</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>256</width>
+            <contains-null>true</contains-null>
+            <cast-to-local-type>true</cast-to-local-type>
+            <collation flag='0' name='binary' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WLONGVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>stay_thru_dt</remote-name>
+            <remote-type>7</remote-type>
+            <local-name>[stay_thru_dt]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>stay_thru_dt</remote-alias>
+            <ordinal>24</ordinal>
+            <local-type>date</local-type>
+            <aggregation>Year</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_TYPE_DATE&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_TYPE_DATE&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>stay_from_dt</remote-name>
+            <remote-type>7</remote-type>
+            <local-name>[stay_from_dt]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>stay_from_dt</remote-alias>
+            <ordinal>25</ordinal>
+            <local-type>date</local-type>
+            <aggregation>Year</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_TYPE_DATE&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_TYPE_DATE&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>load_period</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[load_period]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>load_period</remote-alias>
+            <ordinal>26</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>256</width>
+            <contains-null>true</contains-null>
+            <cast-to-local-type>true</cast-to-local-type>
+            <collation flag='0' name='binary' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WLONGVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>load_run_id</remote-name>
+            <remote-type>20</remote-type>
+            <local-name>[load_run_id]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>load_run_id</remote-alias>
+            <ordinal>27</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>19</precision>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_BIGINT&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_SBIGINT&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>load_ts</remote-name>
+            <remote-type>7</remote-type>
+            <local-name>[load_ts]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>load_ts</remote-alias>
+            <ordinal>28</ordinal>
+            <local-type>datetime</local-type>
+            <aggregation>Year</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_TYPE_TIMESTAMP&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_TYPE_TIMESTAMP&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>ip_lookup</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[ip_lookup]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>ip_lookup</remote-alias>
+            <ordinal>29</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>256</width>
+            <contains-null>true</contains-null>
+            <cast-to-local-type>true</cast-to-local-type>
+            <collation flag='0' name='binary' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WLONGVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>num_therapy_visits</remote-name>
+            <remote-type>20</remote-type>
+            <local-name>[num_therapy_visits]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>num_therapy_visits</remote-alias>
+            <ordinal>30</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>19</precision>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_BIGINT&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_SBIGINT&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>stay_discharge_status_cd_list</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[stay_discharge_status_cd_list]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>stay_discharge_status_cd_list</remote-alias>
+            <ordinal>31</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>256</width>
+            <contains-null>true</contains-null>
+            <cast-to-local-type>true</cast-to-local-type>
+            <collation flag='0' name='binary' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WLONGVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>diagnosis_group_list</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[diagnosis_group_list]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>diagnosis_group_list</remote-alias>
+            <ordinal>32</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>256</width>
+            <contains-null>true</contains-null>
+            <cast-to-local-type>true</cast-to-local-type>
+            <collation flag='0' name='binary' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WLONGVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>total_concurrent_spend</remote-name>
+            <remote-type>131</remote-type>
+            <local-name>[total_concurrent_spend]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>total_concurrent_spend</remote-alias>
+            <ordinal>33</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>12</precision>
+            <scale>2</scale>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_NUMERIC&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_NUMERIC&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>num_total_visits</remote-name>
+            <remote-type>20</remote-type>
+            <local-name>[num_total_visits]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>num_total_visits</remote-alias>
+            <ordinal>34</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>19</precision>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_BIGINT&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_SBIGINT&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>fk_diagnosis_id_list</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[fk_diagnosis_id_list]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>fk_diagnosis_id_list</remote-alias>
+            <ordinal>35</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>1000</width>
+            <contains-null>true</contains-null>
+            <cast-to-local-type>true</cast-to-local-type>
+            <collation flag='0' name='binary' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WLONGVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>rendering_facility_network_id_list</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[rendering_facility_network_id_list]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>rendering_facility_network_id_list</remote-alias>
+            <ordinal>36</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>256</width>
+            <contains-null>true</contains-null>
+            <cast-to-local-type>true</cast-to-local-type>
+            <collation flag='0' name='binary' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WLONGVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>rendering_provider_network_id_list</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[rendering_provider_network_id_list]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>rendering_provider_network_id_list</remote-alias>
+            <ordinal>37</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>2000</width>
+            <contains-null>true</contains-null>
+            <cast-to-local-type>true</cast-to-local-type>
+            <collation flag='0' name='binary' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WLONGVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>rendering_tin_network_id_list</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[rendering_tin_network_id_list]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>rendering_tin_network_id_list</remote-alias>
+            <ordinal>38</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>1600</width>
+            <contains-null>true</contains-null>
+            <cast-to-local-type>true</cast-to-local-type>
+            <collation flag='0' name='binary' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WLONGVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>primary_rendering_facility_network_id</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[primary_rendering_facility_network_id]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>primary_rendering_facility_network_id</remote-alias>
+            <ordinal>39</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>256</width>
+            <contains-null>true</contains-null>
+            <cast-to-local-type>true</cast-to-local-type>
+            <collation flag='0' name='binary' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WLONGVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>primary_rendering_provider_network_id</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[primary_rendering_provider_network_id]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>primary_rendering_provider_network_id</remote-alias>
+            <ordinal>40</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>256</width>
+            <contains-null>true</contains-null>
+            <cast-to-local-type>true</cast-to-local-type>
+            <collation flag='0' name='binary' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WLONGVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>primary_rendering_tin_network_id</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[primary_rendering_tin_network_id]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>primary_rendering_tin_network_id</remote-alias>
+            <ordinal>41</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>256</width>
+            <contains-null>true</contains-null>
+            <cast-to-local-type>true</cast-to-local-type>
+            <collation flag='0' name='binary' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WLONGVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>attribution_type</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[attribution_type]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>attribution_type</remote-alias>
+            <ordinal>42</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>6</width>
+            <contains-null>true</contains-null>
+            <collation flag='0' name='binary' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+              <attribute datatype='string' name='TypeIsVarchar'>&quot;true&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>fac_name</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[fac_name]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>fac_name</remote-alias>
+            <ordinal>43</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>256</width>
+            <contains-null>true</contains-null>
+            <cast-to-local-type>true</cast-to-local-type>
+            <collation flag='0' name='binary' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WLONGVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>state</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[state]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>state</remote-alias>
+            <ordinal>44</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>256</width>
+            <contains-null>true</contains-null>
+            <cast-to-local-type>true</cast-to-local-type>
+            <collation flag='0' name='binary' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WLONGVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>ccn</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[ccn]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>ccn</remote-alias>
+            <ordinal>45</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>256</width>
+            <contains-null>true</contains-null>
+            <cast-to-local-type>true</cast-to-local-type>
+            <collation flag='0' name='binary' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WLONGVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>prov_name</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[prov_name]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>prov_name</remote-alias>
+            <ordinal>46</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>256</width>
+            <contains-null>true</contains-null>
+            <cast-to-local-type>true</cast-to-local-type>
+            <collation flag='0' name='binary' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WLONGVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>address</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[address]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>address</remote-alias>
+            <ordinal>47</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>256</width>
+            <contains-null>true</contains-null>
+            <cast-to-local-type>true</cast-to-local-type>
+            <collation flag='0' name='binary' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WLONGVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>city</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[city]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>city</remote-alias>
+            <ordinal>48</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>256</width>
+            <contains-null>true</contains-null>
+            <cast-to-local-type>true</cast-to-local-type>
+            <collation flag='0' name='binary' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WLONGVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>zip</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[zip]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>zip</remote-alias>
+            <ordinal>49</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>256</width>
+            <contains-null>true</contains-null>
+            <cast-to-local-type>true</cast-to-local-type>
+            <collation flag='0' name='binary' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WLONGVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>phone</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[phone]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>phone</remote-alias>
+            <ordinal>50</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>256</width>
+            <contains-null>true</contains-null>
+            <cast-to-local-type>true</cast-to-local-type>
+            <collation flag='0' name='binary' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WLONGVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>type_of_ownership</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[type_of_ownership]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>type_of_ownership</remote-alias>
+            <ordinal>51</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>256</width>
+            <contains-null>true</contains-null>
+            <cast-to-local-type>true</cast-to-local-type>
+            <collation flag='0' name='binary' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WLONGVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>offers_nursing_care_services</remote-name>
+            <remote-type>11</remote-type>
+            <local-name>[offers_nursing_care_services]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>offers_nursing_care_services</remote-alias>
+            <ordinal>52</ordinal>
+            <local-type>boolean</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_BIT&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_BIT&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>offers_physical_therapy_services</remote-name>
+            <remote-type>11</remote-type>
+            <local-name>[offers_physical_therapy_services]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>offers_physical_therapy_services</remote-alias>
+            <ordinal>53</ordinal>
+            <local-type>boolean</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_BIT&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_BIT&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>offers_occupational_therapy_services</remote-name>
+            <remote-type>11</remote-type>
+            <local-name>[offers_occupational_therapy_services]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>offers_occupational_therapy_services</remote-alias>
+            <ordinal>54</ordinal>
+            <local-type>boolean</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_BIT&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_BIT&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>offers_speech_pathology_services</remote-name>
+            <remote-type>11</remote-type>
+            <local-name>[offers_speech_pathology_services]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>offers_speech_pathology_services</remote-alias>
+            <ordinal>55</ordinal>
+            <local-type>boolean</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_BIT&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_BIT&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>offers_medical_social_services</remote-name>
+            <remote-type>11</remote-type>
+            <local-name>[offers_medical_social_services]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>offers_medical_social_services</remote-alias>
+            <ordinal>56</ordinal>
+            <local-type>boolean</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_BIT&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_BIT&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>offers_home_health_aide_services</remote-name>
+            <remote-type>11</remote-type>
+            <local-name>[offers_home_health_aide_services]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>offers_home_health_aide_services</remote-alias>
+            <ordinal>57</ordinal>
+            <local-type>boolean</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_BIT&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_BIT&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>date_certified</remote-name>
+            <remote-type>7</remote-type>
+            <local-name>[date_certified]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>date_certified</remote-alias>
+            <ordinal>58</ordinal>
+            <local-type>date</local-type>
+            <aggregation>Year</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_TYPE_DATE&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_TYPE_DATE&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>quality_of_patient_care_star_rating</remote-name>
+            <remote-type>131</remote-type>
+            <local-name>[quality_of_patient_care_star_rating]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>quality_of_patient_care_star_rating</remote-alias>
+            <ordinal>59</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>10</precision>
+            <scale>2</scale>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_NUMERIC&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_NUMERIC&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>quality_of_patient_care_footnote</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[quality_of_patient_care_footnote]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>quality_of_patient_care_footnote</remote-alias>
+            <ordinal>60</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>256</width>
+            <contains-null>true</contains-null>
+            <cast-to-local-type>true</cast-to-local-type>
+            <collation flag='0' name='binary' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WLONGVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>how_often_hh_team_began_care_timely</remote-name>
+            <remote-type>131</remote-type>
+            <local-name>[how_often_hh_team_began_care_timely]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>how_often_hh_team_began_care_timely</remote-alias>
+            <ordinal>61</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>10</precision>
+            <scale>2</scale>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_NUMERIC&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_NUMERIC&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>how_often_hh_team_began_care_timely_footnote</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[how_often_hh_team_began_care_timely_footnote]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>how_often_hh_team_began_care_timely_footnote</remote-alias>
+            <ordinal>62</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>256</width>
+            <contains-null>true</contains-null>
+            <cast-to-local-type>true</cast-to-local-type>
+            <collation flag='0' name='binary' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WLONGVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>how_often_hh_team_taught_drugs</remote-name>
+            <remote-type>131</remote-type>
+            <local-name>[how_often_hh_team_taught_drugs]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>how_often_hh_team_taught_drugs</remote-alias>
+            <ordinal>63</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>10</precision>
+            <scale>2</scale>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_NUMERIC&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_NUMERIC&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>how_often_hh_team_taught_drugs_footnote</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[how_often_hh_team_taught_drugs_footnote]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>how_often_hh_team_taught_drugs_footnote</remote-alias>
+            <ordinal>64</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>256</width>
+            <contains-null>true</contains-null>
+            <cast-to-local-type>true</cast-to-local-type>
+            <collation flag='0' name='binary' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WLONGVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>how_often_hh_team_checked_fall_risk</remote-name>
+            <remote-type>131</remote-type>
+            <local-name>[how_often_hh_team_checked_fall_risk]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>how_often_hh_team_checked_fall_risk</remote-alias>
+            <ordinal>65</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>10</precision>
+            <scale>2</scale>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_NUMERIC&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_NUMERIC&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>how_often_hh_team_checked_fall_risk_footnote</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[how_often_hh_team_checked_fall_risk_footnote]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>how_often_hh_team_checked_fall_risk_footnote</remote-alias>
+            <ordinal>66</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>256</width>
+            <contains-null>true</contains-null>
+            <cast-to-local-type>true</cast-to-local-type>
+            <collation flag='0' name='binary' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WLONGVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>how_often_hh_team_checked_for_depression</remote-name>
+            <remote-type>131</remote-type>
+            <local-name>[how_often_hh_team_checked_for_depression]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>how_often_hh_team_checked_for_depression</remote-alias>
+            <ordinal>67</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>10</precision>
+            <scale>2</scale>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_NUMERIC&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_NUMERIC&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>how_often_hh_team_checked_for_depression_footnote</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[how_often_hh_team_checked_for_depression_footnote]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>how_often_hh_team_checked_for_depression_footnote</remote-alias>
+            <ordinal>68</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>256</width>
+            <contains-null>true</contains-null>
+            <cast-to-local-type>true</cast-to-local-type>
+            <collation flag='0' name='binary' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WLONGVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>how_often_hh_team_checked_for_current_flu_shot</remote-name>
+            <remote-type>131</remote-type>
+            <local-name>[how_often_hh_team_checked_for_current_flu_shot]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>how_often_hh_team_checked_for_current_flu_shot</remote-alias>
+            <ordinal>69</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>10</precision>
+            <scale>2</scale>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_NUMERIC&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_NUMERIC&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>how_often_hh_team_checked_for_current_flu_shot_footnote</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[how_often_hh_team_checked_for_current_flu_shot_footnote]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>how_often_hh_team_checked_for_current_flu_shot_footnote</remote-alias>
+            <ordinal>70</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>256</width>
+            <contains-null>true</contains-null>
+            <cast-to-local-type>true</cast-to-local-type>
+            <collation flag='0' name='binary' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WLONGVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>how_often_hh_team_checked_for_current_pneumonia_shot</remote-name>
+            <remote-type>131</remote-type>
+            <local-name>[how_often_hh_team_checked_for_current_pneumonia_shot]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>how_often_hh_team_checked_for_current_pneumonia_shot</remote-alias>
+            <ordinal>71</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>10</precision>
+            <scale>2</scale>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_NUMERIC&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_NUMERIC&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>how_often_hh_team_checked_for_current_pneumonia_shot_footnote</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[how_often_hh_team_checked_for_current_pneumonia_shot_footnote]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>how_often_hh_team_checked_for_current_pneumonia_shot_footnote</remote-alias>
+            <ordinal>72</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>256</width>
+            <contains-null>true</contains-null>
+            <cast-to-local-type>true</cast-to-local-type>
+            <collation flag='0' name='binary' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WLONGVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>how_often_hh_team_gave_footcare_for_diabetics</remote-name>
+            <remote-type>131</remote-type>
+            <local-name>[how_often_hh_team_gave_footcare_for_diabetics]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>how_often_hh_team_gave_footcare_for_diabetics</remote-alias>
+            <ordinal>73</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>10</precision>
+            <scale>2</scale>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_NUMERIC&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_NUMERIC&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>how_often_hh_team_gave_footcare_for_diabetics_footnote</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[how_often_hh_team_gave_footcare_for_diabetics_footnote]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>how_often_hh_team_gave_footcare_for_diabetics_footnote</remote-alias>
+            <ordinal>74</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>256</width>
+            <contains-null>true</contains-null>
+            <cast-to-local-type>true</cast-to-local-type>
+            <collation flag='0' name='binary' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WLONGVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>how_often_patients_improved_movement</remote-name>
+            <remote-type>131</remote-type>
+            <local-name>[how_often_patients_improved_movement]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>how_often_patients_improved_movement</remote-alias>
+            <ordinal>75</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>10</precision>
+            <scale>2</scale>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_NUMERIC&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_NUMERIC&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>how_often_patients_improved_movement_footnote</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[how_often_patients_improved_movement_footnote]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>how_often_patients_improved_movement_footnote</remote-alias>
+            <ordinal>76</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>256</width>
+            <contains-null>true</contains-null>
+            <cast-to-local-type>true</cast-to-local-type>
+            <collation flag='0' name='binary' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WLONGVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>how_often_patients_improved_getting_out_of_bed</remote-name>
+            <remote-type>131</remote-type>
+            <local-name>[how_often_patients_improved_getting_out_of_bed]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>how_often_patients_improved_getting_out_of_bed</remote-alias>
+            <ordinal>77</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>10</precision>
+            <scale>2</scale>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_NUMERIC&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_NUMERIC&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>how_often_patients_improved_getting_out_of_bed_footnote</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[how_often_patients_improved_getting_out_of_bed_footnote]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>how_often_patients_improved_getting_out_of_bed_footnote</remote-alias>
+            <ordinal>78</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>256</width>
+            <contains-null>true</contains-null>
+            <cast-to-local-type>true</cast-to-local-type>
+            <collation flag='0' name='binary' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WLONGVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>how_often_patients_improved_bathing</remote-name>
+            <remote-type>131</remote-type>
+            <local-name>[how_often_patients_improved_bathing]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>how_often_patients_improved_bathing</remote-alias>
+            <ordinal>79</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>10</precision>
+            <scale>2</scale>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_NUMERIC&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_NUMERIC&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>how_often_patients_improved_bathing_footnote</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[how_often_patients_improved_bathing_footnote]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>how_often_patients_improved_bathing_footnote</remote-alias>
+            <ordinal>80</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>256</width>
+            <contains-null>true</contains-null>
+            <cast-to-local-type>true</cast-to-local-type>
+            <collation flag='0' name='binary' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WLONGVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>how_often_patients_had_less_pain_moving</remote-name>
+            <remote-type>131</remote-type>
+            <local-name>[how_often_patients_had_less_pain_moving]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>how_often_patients_had_less_pain_moving</remote-alias>
+            <ordinal>81</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>10</precision>
+            <scale>2</scale>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_NUMERIC&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_NUMERIC&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>how_often_patients_had_less_pain_moving_footnote</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[how_often_patients_had_less_pain_moving_footnote]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>how_often_patients_had_less_pain_moving_footnote</remote-alias>
+            <ordinal>82</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>256</width>
+            <contains-null>true</contains-null>
+            <cast-to-local-type>true</cast-to-local-type>
+            <collation flag='0' name='binary' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WLONGVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>how_often_patients_improved_breathing</remote-name>
+            <remote-type>131</remote-type>
+            <local-name>[how_often_patients_improved_breathing]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>how_often_patients_improved_breathing</remote-alias>
+            <ordinal>83</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>10</precision>
+            <scale>2</scale>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_NUMERIC&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_NUMERIC&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>how_often_patients_improved_breathing_footnote</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[how_often_patients_improved_breathing_footnote]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>how_often_patients_improved_breathing_footnote</remote-alias>
+            <ordinal>84</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>256</width>
+            <contains-null>true</contains-null>
+            <cast-to-local-type>true</cast-to-local-type>
+            <collation flag='0' name='binary' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WLONGVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>how_often_patients_wound_healed_post_operation</remote-name>
+            <remote-type>131</remote-type>
+            <local-name>[how_often_patients_wound_healed_post_operation]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>how_often_patients_wound_healed_post_operation</remote-alias>
+            <ordinal>85</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>10</precision>
+            <scale>2</scale>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_NUMERIC&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_NUMERIC&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>how_often_patients_wound_healed_post_operation_footnote</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[how_often_patients_wound_healed_post_operation_footnote]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>how_often_patients_wound_healed_post_operation_footnote</remote-alias>
+            <ordinal>86</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>256</width>
+            <contains-null>true</contains-null>
+            <cast-to-local-type>true</cast-to-local-type>
+            <collation flag='0' name='binary' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WLONGVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>how_often_patients_improved_oral_medication_admin</remote-name>
+            <remote-type>131</remote-type>
+            <local-name>[how_often_patients_improved_oral_medication_admin]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>how_often_patients_improved_oral_medication_admin</remote-alias>
+            <ordinal>87</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>10</precision>
+            <scale>2</scale>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_NUMERIC&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_NUMERIC&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>how_often_patients_improved_oral_medication_admin_footnote</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[how_often_patients_improved_oral_medication_admin_footnote]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>how_often_patients_improved_oral_medication_admin_footnote</remote-alias>
+            <ordinal>88</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>256</width>
+            <contains-null>true</contains-null>
+            <cast-to-local-type>true</cast-to-local-type>
+            <collation flag='0' name='binary' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WLONGVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>how_often_hh_patients_admitted_to_hospital</remote-name>
+            <remote-type>131</remote-type>
+            <local-name>[how_often_hh_patients_admitted_to_hospital]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>how_often_hh_patients_admitted_to_hospital</remote-alias>
+            <ordinal>89</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>10</precision>
+            <scale>2</scale>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_NUMERIC&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_NUMERIC&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>how_often_hh_patients_admitted_to_hospital_footnote</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[how_often_hh_patients_admitted_to_hospital_footnote]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>how_often_hh_patients_admitted_to_hospital_footnote</remote-alias>
+            <ordinal>90</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>256</width>
+            <contains-null>true</contains-null>
+            <cast-to-local-type>true</cast-to-local-type>
+            <collation flag='0' name='binary' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WLONGVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>how_often_hh_patients_need_er_not_admitted</remote-name>
+            <remote-type>131</remote-type>
+            <local-name>[how_often_hh_patients_need_er_not_admitted]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>how_often_hh_patients_need_er_not_admitted</remote-alias>
+            <ordinal>91</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>10</precision>
+            <scale>2</scale>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_NUMERIC&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_NUMERIC&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>how_often_hh_patients_need_er_not_admitted_footnote</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[how_often_hh_patients_need_er_not_admitted_footnote]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>how_often_hh_patients_need_er_not_admitted_footnote</remote-alias>
+            <ordinal>92</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>256</width>
+            <contains-null>true</contains-null>
+            <cast-to-local-type>true</cast-to-local-type>
+            <collation flag='0' name='binary' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WLONGVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>how_often_hh_patients_recent_hospital_readmission</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[how_often_hh_patients_recent_hospital_readmission]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>how_often_hh_patients_recent_hospital_readmission</remote-alias>
+            <ordinal>93</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>256</width>
+            <contains-null>true</contains-null>
+            <cast-to-local-type>true</cast-to-local-type>
+            <collation flag='0' name='binary' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WLONGVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>how_often_hh_patients_recent_hospital_readmission_footnote</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[how_often_hh_patients_recent_hospital_readmission_footnote]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>how_often_hh_patients_recent_hospital_readmission_footnote</remote-alias>
+            <ordinal>94</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>256</width>
+            <contains-null>true</contains-null>
+            <cast-to-local-type>true</cast-to-local-type>
+            <collation flag='0' name='binary' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WLONGVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>how_often_hh_patients_received_er_care_with_no_readmission</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[how_often_hh_patients_received_er_care_with_no_readmission]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>how_often_hh_patients_received_er_care_with_no_readmission</remote-alias>
+            <ordinal>95</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>256</width>
+            <contains-null>true</contains-null>
+            <cast-to-local-type>true</cast-to-local-type>
+            <collation flag='0' name='binary' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WLONGVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>how_often_hh_patients_received_er_care_with_no_readmission_foot</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[how_often_hh_patients_received_er_care_with_no_readmission_foot]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>how_often_hh_patients_received_er_care_with_no_readmission_foot</remote-alias>
+            <ordinal>96</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>256</width>
+            <contains-null>true</contains-null>
+            <cast-to-local-type>true</cast-to-local-type>
+            <collation flag='0' name='binary' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WLONGVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>footnote</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[footnote]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>footnote</remote-alias>
+            <ordinal>97</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>256</width>
+            <contains-null>true</contains-null>
+            <cast-to-local-type>true</cast-to-local-type>
+            <collation flag='0' name='binary' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WLONGVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>attributed_provider_name</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[attributed_provider_name]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>attributed_provider_name</remote-alias>
+            <ordinal>98</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>256</width>
+            <contains-null>true</contains-null>
+            <cast-to-local-type>true</cast-to-local-type>
+            <collation flag='0' name='binary' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WLONGVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>attributed_tin_name</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[attributed_tin_name]</local-name>
+            <parent-name>[Home Health Encounters]</parent-name>
+            <remote-alias>attributed_tin_name</remote-alias>
+            <ordinal>99</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>256</width>
+            <contains-null>true</contains-null>
+            <cast-to-local-type>true</cast-to-local-type>
+            <collation flag='0' name='binary' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WLONGVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>pk_patient_id</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[pk_patient_id]</local-name>
+            <parent-name>[Patient Info]</parent-name>
+            <remote-alias>pk_patient_id</remote-alias>
+            <ordinal>101</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>256</width>
+            <contains-null>true</contains-null>
+            <cast-to-local-type>true</cast-to-local-type>
+            <collation flag='0' name='binary' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WLONGVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>patient_name</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[patient_name]</local-name>
+            <parent-name>[Patient Info]</parent-name>
+            <remote-alias>patient_name</remote-alias>
+            <ordinal>102</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>256</width>
+            <contains-null>true</contains-null>
+            <cast-to-local-type>true</cast-to-local-type>
+            <collation flag='0' name='binary' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WLONGVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>gender</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[gender]</local-name>
+            <parent-name>[Patient Info]</parent-name>
+            <remote-alias>gender</remote-alias>
+            <ordinal>103</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>4</width>
+            <contains-null>true</contains-null>
+            <collation flag='0' name='binary' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+              <attribute datatype='string' name='TypeIsVarchar'>&quot;true&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>date_of_birth</remote-name>
+            <remote-type>7</remote-type>
+            <local-name>[date_of_birth]</local-name>
+            <parent-name>[Patient Info]</parent-name>
+            <remote-alias>date_of_birth</remote-alias>
+            <ordinal>104</ordinal>
+            <local-type>date</local-type>
+            <aggregation>Year</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_TYPE_DATE&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_TYPE_DATE&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>date_of_death</remote-name>
+            <remote-type>7</remote-type>
+            <local-name>[date_of_death]</local-name>
+            <parent-name>[Patient Info]</parent-name>
+            <remote-alias>date_of_death</remote-alias>
+            <ordinal>105</ordinal>
+            <local-type>date</local-type>
+            <aggregation>Year</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_TYPE_DATE&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_TYPE_DATE&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>deceased_flag</remote-name>
+            <remote-type>11</remote-type>
+            <local-name>[deceased_flag]</local-name>
+            <parent-name>[Patient Info]</parent-name>
+            <remote-alias>deceased_flag</remote-alias>
+            <ordinal>106</ordinal>
+            <local-type>boolean</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_BIT&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_BIT&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>patient_zip</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[patient_zip]</local-name>
+            <parent-name>[Patient Info]</parent-name>
+            <remote-alias>patient_zip</remote-alias>
+            <ordinal>107</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>256</width>
+            <contains-null>true</contains-null>
+            <cast-to-local-type>true</cast-to-local-type>
+            <collation flag='0' name='binary' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WLONGVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+            </attributes>
+          </metadata-record>
+        </metadata-records>
+      </connection>
+      <aliases enabled='yes' />
+      <column caption='CCN (mod)' datatype='string' name='[Calculation_1899674667901231104]' role='dimension' type='nominal'>
+        <calculation class='tableau' formula='split([facility_ccn_num], &apos;|&apos;,2)' />
+      </column>
+      <column datatype='integer' name='[Number of Records]' role='measure' type='quantitative' user:auto-column='numrec'>
+        <calculation class='tableau' formula='1' />
+      </column>
+      <column datatype='string' name='[city]' role='dimension' semantic-role='[City].[Name]' type='nominal' />
+      <column datatype='string' name='[patient_zip]' role='dimension' semantic-role='[ZipCode].[Name]' type='nominal' />
+      <column datatype='string' name='[state]' role='dimension' semantic-role='[State].[Name]' type='nominal' />
+      <column datatype='string' name='[zip]' role='dimension' semantic-role='[ZipCode].[Name]' type='nominal' />
+      <layout dim-ordering='alphabetic' dim-percentage='0.152174' measure-ordering='alphabetic' measure-percentage='0.806159' parameter-percentage='0.0416667' show-structure='true' />
+      <semantic-values>
+        <semantic-value key='[Country].[Name]' value='&quot;United States&quot;' />
+      </semantic-values>
+      <datasource-dependencies datasource='Parameters'>
+        <column caption='ACO ID' datatype='string' name='[Parameter 1]' param-domain-type='list' role='measure' type='nominal' value='&quot;A2024&quot;'>
+          <calculation class='tableau' formula='&quot;A2024&quot;' />
+        </column>
+      </datasource-dependencies>
+    </datasource>
+  </datasources>
+  <worksheets>
+    <worksheet name='Overall HH Care Retention'>
+      <layout-options>
+        <title>
+          <formatted-text>
+            <run>&lt;</run>
+            <run>[Parameters].[Parameter 1]</run>
+            <run>&gt;: &lt;Sheet Name&gt;</run>
+          </formatted-text>
+        </title>
+      </layout-options>
+      <repository-location derived-from='http://localhost:9103/t/a2024/workbooks/BethTINHHuseJan2018/HHbyTINJan2018?rev=' id='HHbyTINJan2018' path='/t/a2024/workbooks/BethTINHHuseJan2018' revision='' site='a2024' />
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='Home Heatlh Encounters' name='federated.089jj2i0hk9k3z16y93o20og9od5' />
+          </datasources>
+          <datasource-dependencies datasource='Parameters'>
+            <column caption='ACO ID' datatype='string' name='[Parameter 1]' param-domain-type='list' role='measure' type='nominal' value='&quot;A2024&quot;'>
+              <calculation class='tableau' formula='&quot;A2024&quot;' />
+            </column>
+          </datasource-dependencies>
+          <datasource-dependencies datasource='federated.089jj2i0hk9k3z16y93o20og9od5'>
+            <column datatype='boolean' name='[attribution_curr_period_flag]' role='dimension' type='nominal' />
+            <column datatype='string' name='[attribution_type]' role='dimension' type='nominal' />
+            <column datatype='real' name='[claim_paid_amt]' role='measure' type='quantitative' />
+            <column-instance column='[fk_patient_id]' derivation='CountD' name='[ctd:fk_patient_id:qk]' pivot='key' type='quantitative' />
+            <column datatype='string' name='[fac_name]' role='dimension' type='nominal' />
+            <column datatype='string' name='[facility_ccn_num]' role='dimension' type='nominal' />
+            <column datatype='string' name='[fk_patient_id]' role='dimension' type='nominal' />
+            <column datatype='string' name='[month_cd]' role='dimension' type='nominal' />
+            <column-instance column='[attribution_curr_period_flag]' derivation='None' name='[none:attribution_curr_period_flag:nk]' pivot='key' type='nominal' />
+            <column-instance column='[attribution_type]' derivation='None' name='[none:attribution_type:nk]' pivot='key' type='nominal' />
+            <column-instance column='[fac_name]' derivation='None' name='[none:fac_name:nk]' pivot='key' type='nominal' />
+            <column-instance column='[facility_ccn_num]' derivation='None' name='[none:facility_ccn_num:nk]' pivot='key' type='nominal' />
+            <column-instance column='[month_cd]' derivation='None' name='[none:month_cd:nk]' pivot='key' type='nominal' />
+            <column-instance column='[claim_paid_amt]' derivation='Sum' name='[sum:claim_paid_amt:qk]' pivot='key' type='quantitative' />
+          </datasource-dependencies>
+          <filter class='categorical' column='[federated.089jj2i0hk9k3z16y93o20og9od5].[:Measure Names]'>
+            <groupfilter function='union' user:op='manual'>
+              <groupfilter function='member' level='[:Measure Names]' member='&quot;[federated.089jj2i0hk9k3z16y93o20og9od5].[ctd:fk_patient_id:qk]&quot;' />
+              <groupfilter function='member' level='[:Measure Names]' member='&quot;[federated.089jj2i0hk9k3z16y93o20og9od5].[sum:claim_paid_amt:qk]&quot;' />
+            </groupfilter>
+          </filter>
+          <filter class='categorical' column='[federated.089jj2i0hk9k3z16y93o20og9od5].[none:attribution_curr_period_flag:nk]'>
+            <groupfilter function='member' level='[none:attribution_curr_period_flag:nk]' member='true' user:ui-domain='relevant' user:ui-enumeration='inclusive' user:ui-marker='enumerate' />
+          </filter>
+          <filter class='categorical' column='[federated.089jj2i0hk9k3z16y93o20og9od5].[none:attribution_type:nk]'>
+            <groupfilter function='member' level='[none:attribution_type:nk]' member='&quot;as_was&quot;' user:ui-domain='relevant' user:ui-enumeration='inclusive' user:ui-marker='enumerate' />
+          </filter>
+          <filter class='categorical' column='[federated.089jj2i0hk9k3z16y93o20og9od5].[none:fac_name:nk]'>
+            <groupfilter function='except' user:ui-domain='relevant' user:ui-enumeration='exclusive' user:ui-marker='enumerate'>
+              <groupfilter function='level-members' level='[none:fac_name:nk]' />
+              <groupfilter function='member' level='[none:fac_name:nk]' member='%null%' />
+            </groupfilter>
+          </filter>
+          <filter class='categorical' column='[federated.089jj2i0hk9k3z16y93o20og9od5].[none:month_cd:nk]'>
+            <groupfilter function='union' user:ui-domain='relevant' user:ui-enumeration='inclusive' user:ui-marker='enumerate'>
+              <groupfilter function='member' level='[none:month_cd:nk]' member='&quot;m-2018-10&quot;' />
+              <groupfilter function='member' level='[none:month_cd:nk]' member='&quot;m-2018-11&quot;' />
+            </groupfilter>
+          </filter>
+          <slices>
+            <column>[federated.089jj2i0hk9k3z16y93o20og9od5].[none:month_cd:nk]</column>
+            <column>[federated.089jj2i0hk9k3z16y93o20og9od5].[none:fac_name:nk]</column>
+            <column>[federated.089jj2i0hk9k3z16y93o20og9od5].[:Measure Names]</column>
+            <column>[federated.089jj2i0hk9k3z16y93o20og9od5].[none:attribution_type:nk]</column>
+            <column>[federated.089jj2i0hk9k3z16y93o20og9od5].[none:attribution_curr_period_flag:nk]</column>
+          </slices>
+          <aggregation value='true' />
+        </view>
+        <style />
+        <panes>
+          <pane selection-relaxation-option='selection-relaxation-allow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Automatic' />
+            <encodings>
+              <text column='[federated.089jj2i0hk9k3z16y93o20og9od5].[Multiple Values]' />
+            </encodings>
+            <style>
+              <style-rule element='mark'>
+                <format attr='mark-labels-show' value='true' />
+              </style-rule>
+            </style>
+          </pane>
+        </panes>
+        <rows total='true'>([federated.089jj2i0hk9k3z16y93o20og9od5].[none:fac_name:nk] / [federated.089jj2i0hk9k3z16y93o20og9od5].[none:facility_ccn_num:nk])</rows>
+        <cols>[federated.089jj2i0hk9k3z16y93o20og9od5].[:Measure Names]</cols>
+      </table>
+    </worksheet>
+  </worksheets>
+  <windows source-height='30'>
+    <window class='worksheet' maximized='true' name='Overall HH Care Retention'>
+      <cards>
+        <edge name='left'>
+          <strip size='160'>
+            <card type='pages' />
+            <card type='filters' />
+            <card type='marks' />
+          </strip>
+        </edge>
+        <edge name='top'>
+          <strip size='2147483647'>
+            <card type='columns' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='rows' />
+          </strip>
+          <strip size='31'>
+            <card type='title' />
+          </strip>
+        </edge>
+        <edge name='right'>
+          <strip size='160'>
+            <card param='[federated.089jj2i0hk9k3z16y93o20og9od5].[none:month_cd:nk]' type='filter' />
+            <card param='[federated.089jj2i0hk9k3z16y93o20og9od5].[none:attribution_type:nk]' type='filter' values='database' />
+            <card param='[federated.089jj2i0hk9k3z16y93o20og9od5].[none:attribution_curr_period_flag:nk]' type='filter' values='database' />
+          </strip>
+        </edge>
+      </cards>
+      <viewpoint>
+        <highlight>
+          <color-one-way>
+            <field>[federated.089jj2i0hk9k3z16y93o20og9od5].[:Measure Names]</field>
+            <field>[federated.089jj2i0hk9k3z16y93o20og9od5].[none:assignable_curr_period_flag:nk]</field>
+            <field>[federated.089jj2i0hk9k3z16y93o20og9od5].[none:at_time_network_nh:nk]</field>
+            <field>[federated.089jj2i0hk9k3z16y93o20og9od5].[none:at_time_tin_fac_nh:nk]</field>
+            <field>[federated.089jj2i0hk9k3z16y93o20og9od5].[none:attributed_tin_name:nk]</field>
+            <field>[federated.089jj2i0hk9k3z16y93o20og9od5].[none:attribution_curr_period_flag:nk]</field>
+            <field>[federated.089jj2i0hk9k3z16y93o20og9od5].[none:attribution_type:nk]</field>
+            <field>[federated.089jj2i0hk9k3z16y93o20og9od5].[none:fac_name:nk]</field>
+            <field>[federated.089jj2i0hk9k3z16y93o20og9od5].[none:facility_ccn_num:nk]</field>
+            <field>[federated.089jj2i0hk9k3z16y93o20og9od5].[none:fk_patient_id:nk]</field>
+            <field>[federated.089jj2i0hk9k3z16y93o20og9od5].[none:month_cd:nk]</field>
+          </color-one-way>
+        </highlight>
+      </viewpoint>
+    </window>
+  </windows>
+</workbook>

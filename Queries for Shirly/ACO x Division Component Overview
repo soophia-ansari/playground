@@ -1,0 +1,61 @@
+SELECT   org_id
+        ,org_level_category_cd
+        ,period_id
+        ,org_level_type_cd
+        ,org_group_id
+        ,measure_name
+        ,facility_group_cd
+        ,fk_facility_id
+        ,service_group_cd
+        ,provider_group_cd
+        ,fk_provider_id
+        ,patient_medicare_group_cd
+        ,patient_group_cd
+        ,other_group_cd
+        ,comparison_group_cd
+        ,measure_cd
+        ,measure_value_text
+        ,measure_value_decimal
+        ,measure_value_date
+        ,component_1_value_text
+        ,component_1_value_decimal
+        ,component_1_value_date
+        ,component_2_value_text
+        ,component_2_value_decimal
+        ,component_2_value_date
+        ,component_3_value_text
+        ,component_3_value_decimal
+        ,component_3_value_date
+        ,component_4_value_text
+        ,component_4_value_decimal
+        ,component_4_value_date
+        ,component_expenditure_category
+        ,measure_label
+        ,related_kpi
+        ,period_type
+        ,number_format
+        ,measure_definition
+        ,provider_name
+        ,at_time_tin_id
+        ,tin_name
+        ,at_time_network_id
+        ,network_name
+        ,month_short_label
+        ,month_start_dt
+        ,od_fac_name
+        ,od_fac_city_name
+        ,od_fac_state_cd
+        ,od_fac_st_adr
+        ,od_fac_zip_cd
+        ,benchmark_value
+FROM insights.metric_value_denormalized_total
+WHERE org_level_category_cd = <Parameters.Organizational Level>
+ AND  attribution_type = <Parameters.Attribution Type>
+ AND  patient_medicare_group_cd = <Parameters.Medicare Cohort>
+ AND  facility_group_cd = '#NA'
+ AND  fk_facility_id = '#NA'
+ AND  patient_group_cd = '#NA'
+ AND  component_expenditure_category = <Parameters.Component Expenditure Category>
+ AND  measure_label = <Parameters.measure_label>
+ AND  related_kpi = 'False'
+ AND  period_type =<Parameters.Period Type>

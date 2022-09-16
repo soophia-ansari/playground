@@ -132,7 +132,7 @@
       <connection class='federated'>
         <named-connections>
           <named-connection caption='carejourney.us-east-1.snowflakecomputing.com' name='snowflake.0vup9bh1k489gb1g7itfn1nr5t6k'>
-            <connection class='snowflake' dbname='PROD_VIZIENTNA_FE' odbc-connect-string-extras='' one-time-sql='' port='0' role='ZZ_PROD_VIZIENTNA_FE' server='carejourney_nci.us-east-1.snowflakecomputing.com' service='ZZ_PROD_VIZIENTNA_FE' username='PROD_APP_TAB_VIZIENTNA' warehouse='PROD_VIZIENTNA_FE' />
+            <connection class='snowflake' dbname='PROD_VIZIENTNA_FE' odbc-connect-string-extras='' one-time-sql='' port='0' role='CJ_PRODUCT' server='carejourney_nci.us-east-1.snowflakecomputing.com' service='cj_product' username='soophia.ansari' warehouse='PROD_VIZIENTNA_FE' />
           </named-connection>
         </named-connections>
         <relation connection='snowflake.0vup9bh1k489gb1g7itfn1nr5t6k' name='REFERRALS_NETWORK' table='[VRDC].[REFERRALS_NETWORK]' type='table' />
@@ -2657,7 +2657,7 @@
       <connection class='federated'>
         <named-connections>
           <named-connection caption='carejourney.us-east-1.snowflakecomputing.com' name='snowflake.0p3y2sf17spflw110hs8h15w6rlt'>
-            <connection class='snowflake' dbname='PROD_VIZIENTNA_FE' odbc-connect-string-extras='' one-time-sql='' port='0' role='ZZ_PROD_VIZIENTNA_FE' server='carejourney_nci.us-east-1.snowflakecomputing.com' service='ZZ_PROD_VIZIENTNA_FE' username='PROD_APP_TAB_VIZIENTNA' warehouse='PROD_VIZIENTNA_FE' />
+            <connection class='snowflake' dbname='PROD_VIZIENTNA_FE' odbc-connect-string-extras='' one-time-sql='' port='0' role='CJ_PRODUCT' server='carejourney_nci.us-east-1.snowflakecomputing.com' service='CJ_PRODUCT' username='PROD_VIZIENTNA_FE' warehouse='PROD_VIZIENTNA_FE' />
           </named-connection>
         </named-connections>
         <relation connection='snowflake.0p3y2sf17spflw110hs8h15w6rlt' name='PROVIDER_REFERRAL_SCORE_NETWORK' table='[VRDC].[PROVIDER_REFERRAL_SCORE_NETWORK]' type='table' />

@@ -1,0 +1,66 @@
+select  mvd.org_id
+        ,mvd.org_level_category_cd
+        ,mvd.period_id
+        ,mvd.org_level_type_cd
+        ,mvd.org_group_id
+        ,mvd.measure_name
+        ,mvd.fk_provider_id
+        ,mvd.measure_cd
+        ,mvd.measure_value_text
+        ,mvd.measure_value_decimal
+        ,mvd.measure_value_date
+        ,mvd.component_1_value_text
+        ,mvd.component_1_value_decimal
+        ,mvd.component_1_value_date
+        ,mvd.component_2_value_text
+        ,mvd.component_2_value_decimal
+        ,mvd.component_2_value_date
+        ,mvd.component_expenditure_category
+        ,mvd.measure_label
+        ,mvd.period_type
+        ,mvd.measure_definition
+        ,initcap(mvd.provider_name) as provider_name
+        ,mvd.at_time_tin_id
+        ,mvd.tin_name
+        ,mvd.at_time_network_id
+        ,mvd.network_name
+        ,coalesce(case when org_level_category_cd = 'aco' then org_group_id when org_level_category_cd = 'at_time_network' then initcap(network_name) when org_level_category_cd = 'at_time_tin' then initcap(tin_name)
+         when org_level_category_cd = 'at_time_npi' then initcap(provider_name) else 'N/A' end,org_group_id) as group_name
+        ,mvd.month_short_label
+        ,mvd.month_start_dt
+        ,coalesce(mvd.benchmark_value,0) as benchmark_value
+        ,coalesce(mvd.measure_value_decimal - mvd.benchmark_value,0) as benchmark_difference
+        ,rank() over (partition by mvd.org_id, mvd.org_level_category_cd, mvd.period_type, mvd.period_id, mvd.measure_name, mvd.component_expenditure_category order by mvd.measure_value_decimal asc) as rank
+        ,count(mvd.org_group_id) over (partition by mvd.org_id, mvd.org_level_category_cd, mvd.period_type, mvd.period_id, mvd.measure_name, mvd.component_expenditure_category) as worst_rank
+        ,mvd.attribution_type
+        ,case when measure_label = 'Average HCC Risk' then measure_value_decimal else null end as hcc_risk_score
+FROM insights.metric_value_denormalized_total mvd
+
+WHERE mvd.patient_medicare_group_cd = '#NA'
+ AND  mvd.fk_facility_id = '#NA'
+ AND  mvd.patient_group_cd = '#NA'
+ AND  mvd.component_expenditure_category in ('Total', 'Total Risk Adjusted')
+ --AND  mvd.related_kpi = 'False'
+and mvd.month_start_dt > '2017-11-30'
+and mvd.measure_value_decimal is not null
+and mvd.measure_value_decimal > 0
+and mvd.measure_label in ('Total',
+'Outpatient',
+'Skilled Nursing Facility',
+'Hospital Inpatient',
+'Part B',
+'Hospice',
+'Average HCC Risk',
+'Part B DME',
+'Home Health'
+)
+and
+  exists (select distinct mod.org_id, mod.org_group_id from insights.metric_value_denormalized_total mod
+  where mod.measure_cd = 'total_member_years_current_month'
+    --and mod.measure_value_decimal >= 15
+  and mod.org_group_id = mvd.org_group_id
+  and period_id = (select max(load_period) from insights.max_load_period)
+  group by 1,2)
+order by 1,2,3,5,6
+
+filters: attribution_type, period_type, month_short_label

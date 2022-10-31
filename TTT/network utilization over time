@@ -13,7 +13,7 @@ select
     ,fk_patient_id
     ,pk_visit_id
     ,fk_facility_id
-    ,visit_from_month_cd
+    ,CONCAT(MONTH(VISIT_THRU_DT), '-', YEAR(VISIT_THRU_DT)) as thru_month
     ,claim_type_cd_list
     ,procedure_hcpcs_cd_list
     ,fk_provider_rendering_id_list

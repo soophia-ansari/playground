@@ -1,7 +1,35 @@
 select
-    ptb.* 
+    network_name
+    ,case when ATTRIBUTION_CURR_PERIOD_FLAG = true 
+    then 'Attributed' else 'Assignable' END AS attribution_status
+    ,at_time_primary_prov_nh
+    ,at_time_tin_fac_nh
+    ,at_time_network_nh
+    ,assgn_medicare_status_cd
+    ,patient_cohort
+    ,risk_score
+    ,patient_frailty_group
+    ,claim_paid_amt
+    ,fk_patient_id
+    ,pk_visit_id
+    ,fk_facility_id
+    ,visit_from_month_cd
+    ,claim_type_cd_list
+    ,procedure_hcpcs_cd_list
+    ,fk_provider_rendering_id_list
+    ,fk_tin_rendering_id
+    ,procedure_betos_cd_list
+    ,place_of_service_cd
+    ,tin_network
+    ,rendering_provider_network
+    ,specialty_cd_list
+    ,betos_desc
+    ,specialty_desc
+    ,attribution_type
+    ,pos_desc
     ,coalesce(rendering_provider_network, tin_network) as network
     ,coalesce(ptb.attributed_tin_name, t.src_tin_name) as attributed_tin_name_update
+    ,rendering_provider_name
 from 
     insights.metric_value_part_b ptb
 left join (SELECT DISTINCT at_time_tin_id as tin_num

@@ -1,0 +1,14 @@
+select
+    ptb.* 
+    ,coalesce(rendering_provider_network, tin_network) as network
+    ,coalesce(ptb.attributed_tin_name, t.src_tin_name) as attributed_tin_name_update
+from 
+    insights.metric_value_part_b ptb
+left join (SELECT DISTINCT at_time_tin_id as tin_num
+       ,initcap(tin_name) as src_tin_name
+    FROM insights.metric_value_denormalized_total tn_name
+    where tn_name.tin_name is not null
+    and org_level_category_cd = 'at_time_tin'
+    and attribution_type = 'as_was'
+) t on ptb.at_time_tin_fac_nh = t.tin_num
+and ptb.fk_provider_rendering_id_list != array_construct()
